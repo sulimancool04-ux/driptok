@@ -2,12 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret",
-    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
-    "TELEGRAM_WEBHOOK_URL": "@telegram_webhook_url",
-    "BLOB_READ_WRITE_TOKEN": "@blob_read_write_token"
-  }
+  "regions": ["iad1"]
 }
