@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DripTok
 
-## Getting Started
+TikTok для модников и молодежи.
 
-First, run the development server:
+## Функционал
 
+- Регистрация и вход по email/паролю
+- Профиль с редактированием
+- Загрузка видео
+- Лента видео
+- Просмотр видео с лайками и комментариями
+- Telegram бот для уведомлений
+
+## Технологии
+
+- Next.js 16
+- TypeScript
+- Tailwind CSS
+- Prisma ORM (SQLite/PostgreSQL)
+- Vercel Blob для хранения видео
+- JWT аутентификация
+- Telegram Bot API
+
+## Запуск локально
+
+1. Установите зависимости:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Настройте переменные окружения:
+```bash
+cp .env.example .env
+```
+Отредактируйте `.env` файл.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Запустите миграцию базы данных:
+```bash
+npx prisma migrate dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Запустите разработку:
+```bash
+npm run dev
+```
 
-## Learn More
+Откройте http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+## Деплой на Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Создайте репозиторий на GitHub
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Перейдите на https://github.com/new
+2. Назовите репозиторий `driptok`
+3. Создайте пустой репозиторий
 
-## Deploy on Vercel
+### 2. Подключите локальный репозиторий
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+git remote add origin https://github.com/ваш-логин/driptok.git
+git branch -M main
+git push -u origin main
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Деплой на Vercel
+
+1. Перейдите на https://vercel.com/new
+2. Импортируйте ваш GitHub репозиторий
+3. Настройте переменные окружения:
+   - `DATABASE_URL` - строка подключения к базе данных (рекомендуется Vercel Postgres)
+   - `JWT_SECRET` - секретный ключ для JWT
+   - `TELEGRAM_BOT_TOKEN` - токен вашего Telegram бота
+   - `TELEGRAM_WEBHOOK_URL` - URL вашего домена + `/api/telegram`
+   - `BLOB_READ_WRITE_TOKEN` - токен Vercel Blob
+
+4. Нажмите "Deploy"
+
+### 4. Настройка базы данных
+
+Для продакшена рекомендуется использовать PostgreSQL. Измените `prisma/schema.prisma`:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+И выполните миграцию:
+```bash
+npx prisma migrate deploy
+```
+
+### 5. Настройка Telegram бота
+
+После деплоя установите webhook:
+
+```
+GET https://ваш-домен.vercel.app/api/telegram
+```
+
+## API Endpoints
+
+- `POST /api/auth/register` - регистрация
+- `POST /api/auth/login` - вход
+- `GET /api/videos` - список видео
+- `POST /api/videos/upload` - загрузка видео
+- `GET /api/videos/[id]` - одно видео
+- `POST /api/videos/[id]/like` - лайк
+- `POST /api/videos/[id]/comments` - комментарий
+- `PUT /api/user/profile` - обновление профиля
+
+## Лицензия
+
+MIT
