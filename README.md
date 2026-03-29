@@ -77,8 +77,12 @@ git push -u origin main
 
 ### 4. Настройка базы данных
 
-Для продакшена рекомендуется использовать PostgreSQL. Измените `prisma/schema.prisma`:
-
+1. **Vercel Postgres** (рекомендуется):
+   - Перейдите в раздел "Storage" в Vercel
+   - Создайте новый Postgres database
+   - Скопируйте `DATABASE_URL`
+   
+2. **Измените провайдер в `prisma/schema.prisma`**:
 ```prisma
 datasource db {
   provider = "postgresql"
@@ -86,18 +90,28 @@ datasource db {
 }
 ```
 
-И выполните миграцию:
+3. **Выполните миграцию**:
 ```bash
 npx prisma migrate deploy
 ```
 
 ### 5. Настройка Telegram бота
 
-После деплоя установите webhook:
-
+1. Создайте бота через [@BotFather](https://t.me/BotFather) в Telegram
+2. Получите токен бота
+3. Добавьте токен в переменные окружения Vercel как `TELEGRAM_BOT_TOKEN`
+4. После деплоя установите webhook:
 ```
 GET https://ваш-домен.vercel.app/api/telegram
 ```
+
+### 6. Настройка Vercel Blob
+
+1. Перейдите в панель управления Vercel
+2. Перейдите в раздел "Storage"
+3. Создайте новый Blob store
+4. Скопируйте `BLOB_READ_WRITE_TOKEN`
+5. Добавьте его в переменные окружения
 
 ## API Endpoints
 
